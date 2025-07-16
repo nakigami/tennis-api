@@ -133,7 +133,7 @@ docker-compose up
 
 ### L'interface graphique qui permet d'appeler le BFF
 
-<img width="1920" height="802" alt="image" src="https://github.com/user-attachments/assets/c529125e-cf4b-48a7-ac3b-8b4f60ed3ec8" />
+<img width="1917" height="805" alt="image" src="https://github.com/user-attachments/assets/e09f1866-0288-4043-8829-43f580c05cef" />
 
 ### Le health actuator
 
