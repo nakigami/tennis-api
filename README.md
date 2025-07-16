@@ -1,4 +1,4 @@
-# Tennis API - BForbank Test Technique
+# Tennis API - Test Technique
 
 
 **Avant de poursuivre la lecture de ce README, veuillez consulter l'image ci-dessus et la vidéo de démonstration.**
@@ -7,7 +7,16 @@
 
 ## Présentation
 
-Cette API REST est conçue dans le cadre d'un test technique pour BForbank. Elle est appelée par le BFF disponible ici : [Tennis Score Tracker BFF](https://github.com/nakigami/tennis-score-tracker-bff) et sert de backend (d'une façon indirecte) pour l'application front-end React : [Tennis Score Tracker React App](https://github.com/nakigami/tennis-score-tracker-react-app/).
+Le schéma ci-dessus illustre l'architecture complète du système :
+- À gauche : Le frontend React qui permet aux utilisateurs d'interagir avec l'application
+- Au centre : Le BFF (Backend For Frontend) qui sert d'intermédiaire et simplifie les interactions
+- Au centre-droit : Notre API REST Tennis qui implémente la logique métier du jeu de tennis
+- À droite : La base de données PostgreSQL qui stocke les données des matchs
+- En bas : Les composants d'infrastructure incluant Kafka pour la messagerie asynchrone, Swagger pour la documentation API, Docker Compose pour l'orchestration des services, et les endpoints de monitoring (Health Actuator)
+
+Cette architecture en couches permet une séparation claire des responsabilités et facilite la maintenance et l'évolution du système.
+
+Ce projet est conçu dans le cadre d'un test technique. Il est appelé par le BFF disponible ici : [Tennis Score Tracker BFF](https://github.com/nakigami/tennis-score-tracker-bff) et sert de backend (d'une façon indirecte) pour l'application front-end React : [Tennis Score Tracker React App](https://github.com/nakigami/tennis-score-tracker-react-app/).
 
 L'API est développée selon une architecture hexagonale (ports & adapters), permettant une séparation claire entre la logique métier et les détails d'infrastructure.
 
@@ -111,6 +120,29 @@ Le projet utilise Docker Compose pour orchestrer tous les services nécessaires 
 ```bash
 docker-compose up
 ```
+
+## Exemples d'utilisation
+
+### Exemple d'envoi d'une requête via Postman
+
+<img width="1485" height="805" alt="image" src="https://github.com/user-attachments/assets/713980de-afe1-4ece-b170-6874bf558ec3" />
+
+### Exemple du contenu du topic après la création d'un match
+
+<img width="1690" height="603" alt="image" src="https://github.com/user-attachments/assets/621a15ba-73ce-4430-b839-f03f16957144" />
+
+### L'interface graphique qui permet d'appeler le BFF
+
+<img width="1920" height="802" alt="image" src="https://github.com/user-attachments/assets/c529125e-cf4b-48a7-ac3b-8b4f60ed3ec8" />
+
+### Le health actuator
+
+<img width="592" height="721" alt="image" src="https://github.com/user-attachments/assets/27c5da0c-db43-45f2-a30f-32bf48f2f149" />
+
+### La gestion des erreurs en cas de non respect du schema du message
+
+<img width="1500" height="731" alt="image" src="https://github.com/user-attachments/assets/869eb126-69de-4a17-8b4e-b39373bf938e" />
+
 
 ## Note pour les évaluateurs
 
