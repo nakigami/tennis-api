@@ -127,7 +127,7 @@ docker-compose up
 
 <img width="1485" height="805" alt="image" src="https://github.com/user-attachments/assets/713980de-afe1-4ece-b170-6874bf558ec3" />
 
-### Exemple du contenu du topic après la création d'un match
+### Exemple du contenu du topic Kafka après la création d'un match
 
 <img width="1690" height="603" alt="image" src="https://github.com/user-attachments/assets/621a15ba-73ce-4430-b839-f03f16957144" />
 
