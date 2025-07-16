@@ -3,6 +3,8 @@
 
 **Avant de poursuivre la lecture de ce README, veuillez consulter l'image ci-dessus et la vidéo de démonstration.**
 
+<img width="2233" height="555" alt="Architecture" src="https://github.com/user-attachments/assets/243777e2-aec4-4808-9800-5c9bf2fdb7fd" />
+
 ## Présentation
 
 Cette API REST est conçue dans le cadre d'un test technique pour BForbank. Elle est appelée par le BFF disponible ici : [Tennis Score Tracker BFF](https://github.com/nakigami/tennis-score-tracker-bff) et sert de backend (d'une façon indirecte) pour l'application front-end React : [Tennis Score Tracker React App](https://github.com/nakigami/tennis-score-tracker-react-app/).
