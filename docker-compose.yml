@@ -1,0 +1,97 @@
+version: '3.8'
+
+networks:
+  tennis-net:
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: tennisdb
+      POSTGRES_USER: tennis
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - tennis-net
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - tennis-net
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+    networks:
+      - tennis-net
+
+  backend:
+    build: .
+    depends_on:
+      - db
+      - kafka
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/tennisdb
+      SPRING_DATASOURCE_USERNAME: tennis
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    restart: unless-stopped
+    networks:
+      - tennis-net
+
+  tests:
+    build: .
+    depends_on:
+      - backend
+      - db
+      - kafka
+    environment:
+      API_BASE_URL: "http://backend:8080"
+    networks:
+      - tennis-net
+    command: >
+      sh -c "
+        echo 'Waiting for backend...' &&
+        until curl -s http://backend:8080/api/matches/ping; do
+          echo 'Backend not ready, waiting 5s...' &&
+          sleep 5
+        done &&
+        echo 'Backend ready, launching tests...' &&
+        mvn verify
+      "
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    depends_on:
+      - kafka
+    ports:
+      - "8081:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    networks:
+      - tennis-net
+
+volumes:
+  postgres_data:
